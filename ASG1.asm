@@ -1,0 +1,44 @@
+TITLE   8086 Code Template (for EXE file)
+       #MAKE_EXE#
+
+DSEG    SEGMENT 'DATA'
+
+NUMBERS	DB 01111111b, 01110111b, 01011011b, 01110110b, 01111101b, 00000000b, 00000000b, 00000000b
+
+DSEG    ENDS
+
+SSEG    SEGMENT STACK   'STACK'
+        DW      100h    DUP(?)
+SSEG    ENDS
+
+CSEG    SEGMENT 'CODE'
+
+START   PROC    FAR
+
+    PUSH    DS
+    MOV     AX, 0
+    PUSH    AX
+
+    MOV     AX, DSEG
+    MOV     DS, AX
+    MOV     ES, AX
+
+	MOV DX, 2030h	
+	MOV SI, 0
+	MOV CX, 8
+
+NEXT:
+	MOV AL,NUMBERS[SI]
+	out dx,al
+	INC SI
+	INC DX
+
+	LOOP NEXT
+
+    RET
+START   ENDP
+
+CSEG    ENDS 
+
+        END    START   
+
